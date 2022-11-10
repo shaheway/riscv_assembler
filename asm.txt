@@ -1,0 +1,7 @@
+add x0, x0, 0        0x0
+bne s1, s2, L1       0x4
+addi s4, a0, 0x18    0x8
+jal a1, L2           0xc
+L1:
+    ori s4, s3, s2   0x10
+L2: xori s4, s3, s2  0x14

@@ -1,0 +1,51 @@
+# comment goes here
+# Arithmetic
+add x0, x0, x0
+sub t0, a2, a3 #SUBtract; rd = rs1 - rs2
+and t1, s2, s0# bitwise AND
+or s1, a0, s0 # bitwise OR
+xor t0, a1, a3 # bitwisr XOR
+sll s9, t1, t2 # Shift Left Logical
+srl s10, s4, s3 # Shift Right Logical
+sra s11, a4, a5 # Shift Right Arithmetic
+slt t3, a3, s7 # Set Less Than(Signed)
+sltu t4, a4, s8 # Set Less Than(Unsigned)
+addi t5, a5, 0x123 # ADD Immediate
+andi t6, a6, 0x3066 # bitwise AND Immediate
+ori s7, a7, 0xf0f0 # bitwise OR Immediate
+xori s1, a2, 0x7786 # bitwise XOR Immediate
+slli s3, s4, 0x3 # Shift Left Logical Immediate
+srli s3, s5, 0x1 # Shift Right Logical Immediate
+srai s6, s7, 0x2 # Shift Right Arithmetic Immediate
+slti s8, s7, 0x1 # Set Less Than Immediate (signed)
+sltiu s9, s10, 0x3 # Set Less Than Immediate (Unsigned)
+# Memory
+lb t0, 0x4(s1) # Load Byte, sign-extended
+lbu t0, 0x4(s1) # Load Byte(unsigned), zero-extended
+lh t0, 0x8(s1) # Load Half-word, sign-extended
+lhu t0, 0x8(s1) # Load Half-word(unsigned), zero-extended
+lw t0, 0x16(s1) # Load Word
+sb t0, 0x20(s1) # Store Byte
+sh t0, 0x24(s1) # Store Half-word
+sw t0, 0x36(s1) # Store Word
+# Control
+beq t0, t1, L1 # Branch if EQual
+bge t0, t1, L2 # Branch if Greater or Equal (signed)
+bgeu t0, t1, 0x100 # Branch if Greater or Equal (Unsigned)
+blt s1, s4, L3 # Branch if Less Than (signed)
+bltu s1, s4, 0xa201 # Branch if Less Than (Unsigned)
+bne s1, s4, 0x4400 # Branch if Not Equal
+jal s3, 0x8008 # Jump And Link
+jalr t0, a1, 0x4400 # Jump And Link Register
+#Other
+auipc a2, 0x1 # Add Upper Immediate to PC
+lui t2, 0x1 # Load Upper Immediate
+ebreak # Environment BREAK
+ecall # Environment CALL
+L1:
+    addi s2, s1, 0x18
+    add s1, s2, s3
+L2: addi s1, s0, 0x10
+L3:
+
+addi s1, t0, 0x02
