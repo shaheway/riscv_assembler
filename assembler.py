@@ -94,7 +94,26 @@ class AssemblyCode:
             binary_inst_array[7:12] = list(self.op[0])
             binary_inst_array[12:15] = self.funct3
             binary_inst_array[15:20] = list(self.op[1])
-            
+            binary_inst_array[20:] = list(self.op[2])
+        if self.type == 'S':
+            binary_inst_array[7:12] = list(self.op[3])[0:5]
+            binary_inst_array[12:15] = self.funct3
+            binary_inst_array[15:20] = list(self.op[1])
+            binary_inst_array[20:25] = list(self.op[2])
+            binary_inst_array[25:] = list(self.op[3])[5:]
+        if self.type == 'B':
+            binary_inst_array[7:12] = list(self.op[2])[11] + list(self.op[2])[1:5] 
+            binary_inst_array[12:15] = self.funct3
+            binary_inst_array[15:20] = list(self.op[1])
+            binary_inst_array[20:25] = list(self.op[2])
+            binary_inst_array[25:] = list(self.op[2])[5:11] + list(self.op[2])[11]
+        if self.type == 'U':
+            binary_inst_array[7:12] = list(self.op[0])
+            binary_inst_array[12:] = list(self.op[1])
+        if self.type == 'J':
+            binary_inst_array[7:12] = list(self.op[0])
+            binary_inst_array[12:] = list(self.op[1])[12:20]+list(self.op[1])[11]+list(self.op[1])[1:11]+list(self.op[1])[20]
 
 
-array = [['add', ['x0', 'x0', 'x0']], ['sub', 'x0', 'x0']]
+
+array = [['add', ['x0', 'x0', 'x0']]]
