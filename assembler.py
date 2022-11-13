@@ -1,5 +1,4 @@
 import numpy as np
-import numba
 rv32isa = {'add'  : {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode': '0110011'},
            'sub'  : {'type': 'R', 'funct3': '000', 'funct7': '0100000', 'opcode': '0110011'},
            'and'  : {'type': 'R', 'funct3': '111', 'funct7': '0000000', 'opcode': '0110011'},
@@ -75,48 +74,57 @@ registers = {'x0': '00000',
 
 class AssemblyCode:
     def __init__(self, inst_name, ops):
-        self.type = list(rv32isa[inst_name]['type'])
-        self.funct3 = list(rv32isa[inst_name]['funct3'])
-        self.funct7 = list(rv32isa[inst_name]['funct7'])
+        self.type = rv32isa[inst_name]['type']
+        self.funct3 = list(rv32isa[inst_name]['funct3']) if rv32isa[inst_name]['funct3'] else None
+        self.funct7 = list(rv32isa[inst_name]['funct7']) if rv32isa[inst_name]['funct7'] else None
         self.opcode = list(rv32isa[inst_name]['opcode'])
-        self.ops = ops
+        self.op = ops
+        self.inst = []
         self.convert()
     
-    # @numba.jit()
     def convert(self):
         binary_inst_array = np.array(list('00000000000000000000000000000000'))
         binary_inst_array[0:7] = self.opcode
         if self.type == 'R':
-            binary_inst_array[7:12] = list(self.op[0])
+            binary_inst_array[7:12] = list(registers[self.op[0]])
             binary_inst_array[12:15] = self.funct3
-            binary_inst_array[15:20] = list(self.op[1])
-            binary_inst_array[20:25] = list(self.op[2])
+            binary_inst_array[15:20] = list(registers[self.op[1]])
+            binary_inst_array[20:25] = list(registers[self.op[2]])
             binary_inst_array[25:] = self.funct7
         if self.type == 'I':
-            binary_inst_array[7:12] = list(self.op[0])
+            binary_inst_array[7:12] = list(registers[self.op[0]])
             binary_inst_array[12:15] = self.funct3
-            binary_inst_array[15:20] = list(self.op[1])
+            binary_inst_array[15:20] = list(registers[self.op[1]])
             binary_inst_array[20:] = list(self.op[2])
         if self.type == 'S':
-            binary_inst_array[7:12] = list(self.op[3])[0:5]
+            binary_inst_array[7:12] = list(self.op[2])[0:5]
             binary_inst_array[12:15] = self.funct3
-            binary_inst_array[15:20] = list(self.op[1])
-            binary_inst_array[20:25] = list(self.op[2])
-            binary_inst_array[25:] = list(self.op[3])[5:]
+            binary_inst_array[15:20] = list(registers[self.op[0]])
+            binary_inst_array[20:25] = list(registers[self.op[1]])
+            binary_inst_array[25:] = list(self.op[2])[5:]
         if self.type == 'B':
-            binary_inst_array[7:12] = list(self.op[2])[11] + list(self.op[2])[1:5] 
+            binary_inst_array[7:12] = list(self.op[2])[11]+list(self.op[2])[1:5]
             binary_inst_array[12:15] = self.funct3
-            binary_inst_array[15:20] = list(self.op[1])
-            binary_inst_array[20:25] = list(self.op[2])
-            binary_inst_array[25:] = list(self.op[2])[5:11] + list(self.op[2])[11]
+            binary_inst_array[15:20] = list(registers[self.op[0]])
+            binary_inst_array[20:25] = list(registers[self.op[1]])
+            binary_inst_array[25:] = list(self.op[2])[5:11]+list(self.op[2])[12]
         if self.type == 'U':
-            binary_inst_array[7:12] = list(self.op[0])
+            binary_inst_array[7:12] = list(registers[self.op[0]])
             binary_inst_array[12:] = list(self.op[1])
         if self.type == 'J':
-            binary_inst_array[7:12] = list(self.op[0])
+            binary_inst_array[7:12] = list(registers[self.op[0]])
             binary_inst_array[12:] = list(self.op[1])[12:20]+list(self.op[1])[11]+list(self.op[1])[1:11]+list(self.op[1])[20]
+        for i in range(0, 32, 4):
+            self.inst.append(hex(int(binary_inst_array[i]+binary_inst_array[i+1]+binary_inst_array[i+2]+binary_inst_array[i+3], 2))[-1])
+        # print(binary_inst_array)
+        
+    def __str__(self) -> str:
+        inst_str = ""
+        inst_str = inst_str.join(self.inst)
+        return inst_str
 
+array = [['add', ['x0', 'x0', 'x0']], ['addi', ['s1', 'x0', '000011111001']]]
+for e in array:
+    hex_inst = AssemblyCode(e[0], e[1])
+    print(hex_inst)
 
-
-array = [['add', ['x0', 'x0', 'x0']]]
-AssemblyCode(array[0][0], array[0][1])
