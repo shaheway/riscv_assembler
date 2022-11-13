@@ -1,3 +1,4 @@
+import numba
 rv32isa = {'add': {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode': '0110011'},
            'sub': {'type': 'R', 'funct3': '000', 'funct7': '0100000', 'opcode': '0110011'},
            'and': {'type': 'R', 'funct3': '111', 'funct7': '0000000', 'opcode': '0110011'},
@@ -39,7 +40,7 @@ rv32isa = {'add': {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode': 
            'ecall': {'type': 'I', 'funct3': '000', 'funct7': None, 'opcode': '1110011'}
            }
 
-
+@numba.jit()
 def hex_to_bit(s, op):
     hex_num = eval(s)
     if rv32isa[op]['type'] == 'J':
@@ -122,6 +123,4 @@ def main():
                     out[i][1][j] = hex_to_bit(out[i][1][j], op)
         print(out)
         print(alter)
-
-
 main()

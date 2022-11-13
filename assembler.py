@@ -1,4 +1,5 @@
 import numpy as np
+import numba
 rv32isa = {'add'  : {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode': '0110011'},
            'sub'  : {'type': 'R', 'funct3': '000', 'funct7': '0100000', 'opcode': '0110011'},
            'and'  : {'type': 'R', 'funct3': '111', 'funct7': '0000000', 'opcode': '0110011'},
@@ -81,6 +82,7 @@ class AssemblyCode:
         self.ops = ops
         self.convert()
     
+    # @numba.jit()
     def convert(self):
         binary_inst_array = np.array(list('00000000000000000000000000000000'))
         binary_inst_array[0:7] = self.opcode
@@ -117,3 +119,4 @@ class AssemblyCode:
 
 
 array = [['add', ['x0', 'x0', 'x0']]]
+AssemblyCode(array[0][0], array[0][1])
