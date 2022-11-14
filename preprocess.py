@@ -160,7 +160,7 @@ def main(infile_name):
             op = out[i][0]
             for j in range(len(out[i][1])):
                 out[i][1][j] = alter.get(out[i][1][j], out[i][1][j])
-                if out[i][1][j][0:2] == '0x' or out[i][1][j][0:3] == '-0x' or out[i][1][j] == '0':
+                if out[i][1][j][0] == '-' or (out[i][1][j][0] >= '0' and out[i][1][j][0] <= '9'):
                     out[i][1][j] = to_bit(out[i][1][j], op)
         print(out)
         # print(alter)
