@@ -42,6 +42,16 @@ auipc a2, 0x1 # Add Upper Immediate to PC
 lui t2, 0x1 # Load Upper Immediate
 ebreak # Environment BREAK
 ecall # Environment CALL
+# Pseudo Instructions
+nop
+mv rd, rs
+not rd, rs
+neg rd, rs
+negw rd, rs
+seqz rd, rs
+snez rd, rs
+sltz rd, rs
+sgtz rd, rs
 L1:
     addi s2, s1, 0x18
     add s1, s2, s3

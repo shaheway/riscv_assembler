@@ -1,4 +1,5 @@
 import numba
+
 rv32isa = {'add': {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode': '0110011'},
            'sub': {'type': 'R', 'funct3': '000', 'funct7': '0100000', 'opcode': '0110011'},
            'and': {'type': 'R', 'funct3': '111', 'funct7': '0000000', 'opcode': '0110011'},
@@ -40,6 +41,9 @@ rv32isa = {'add': {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode': 
            'ecall': {'type': 'I', 'funct3': '000', 'funct7': None, 'opcode': '1110011'}
            }
 
+Pseu = ['nop', 'mv', 'not', 'neg', 'negw', 'sext.w', 'seqz', 'snez', 'sltz', 'sgtz']
+
+
 @numba.jit()
 def hex_to_bit(s, op):
     hex_num = eval(s)
@@ -69,6 +73,40 @@ def hex_to_bit(s, op):
             return result
 
 
+def pseudo(res):
+    if res[0] not in Pseu:
+        return res
+    if res[0] == 'nop':
+        return ['addi', ['x0', 'x0', '0x0']]
+    elif res[0] == 'mv':
+        res[0] = 'addi'
+        res[1].append('0x0')
+    elif res[0] == 'not':
+        res[0] = 'xori'
+        res[1].append('-0x1')
+    elif res[0] == 'neg':
+        res[0] = 'sub'
+        res[1].insert(1, 'x0')
+    elif res[0] == 'negw':
+        res[0] = 'subw'
+        res[1].insert(1, 'x0')
+    # elif res[0] == 'sext.w':
+    #     res[0] = 'addiw'
+    #     res[1].append('0x0')
+    elif res[0] == 'seqz':
+        res[0] = 'sltiu'
+        res[1].append('0x1')
+    elif res[0] == 'snez':
+        res[0] = 'sltu'
+        res[1].insert(1, 'x0')
+    elif res[0] == 'sltz':
+        res[0] = 'slt'
+        res[1].append('x0')
+    elif res[0] == 'sgtz':
+        res[0] = 'slt'
+        res[1].insert(1, 'x0')
+    return res
+
 def main():
     with open("assembly_code.txt", encoding='utf-8') as file_obj:
         cnt = -4
@@ -88,7 +126,7 @@ def main():
                     arr.pop()
                 if arr[0][-1] == ':':
                     if len(arr) == 1:
-                        alter.update({arr[0][:-1]: str(hex(cnt+4))})
+                        alter.update({arr[0][:-1]: str(hex(cnt + 4))})
                         continue
                     else:
                         cnt += 4
@@ -113,6 +151,7 @@ def main():
                     res.append([])
                 else:
                     res.append(op_addr)
+                res = pseudo(res)
                 out.append(res)
                 # print(res)
         for i in range(len(out)):
@@ -122,5 +161,7 @@ def main():
                 if out[i][1][j][0:2] == '0x' or out[i][1][j][0:3] == '-0x':
                     out[i][1][j] = hex_to_bit(out[i][1][j], op)
         print(out)
-        print(alter)
+        # print(alter)
+
+
 main()
