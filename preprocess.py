@@ -1,5 +1,5 @@
 import numba
-# import assembler
+import assembler
 rv32isa = {'add': {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode': '0110011'},
            'sub': {'type': 'R', 'funct3': '000', 'funct7': '0100000', 'opcode': '0110011'},
            'and': {'type': 'R', 'funct3': '111', 'funct7': '0000000', 'opcode': '0110011'},
@@ -178,14 +178,14 @@ def main(infile_name):
                     # print(out[i][1][j])
                 if out[i][1][j][0] == '-' or ('0' <= out[i][1][j][0] <= '9'):   # change number to bit
                     out[i][1][j] = to_bit(out[i][1][j], op)
-        print(out)
-        print(alter)
-        # return out
+        # print(out)
+        # print(alter)
+        return out
 
 
-# raw_inst = main("loop_add.txt")
-# for e in raw_inst:
-#     hex_inst = assembler.AssemblyCode(e[0], e[1])
-#     print(hex_inst)
+raw_inst = main("loop_add.txt")
+for e in raw_inst:
+    hex_inst = assembler.AssemblyCode(e[0], e[1])
+    print(hex_inst)
 
-main("assembly_code.txt")
+# main("assembly_code.txt")

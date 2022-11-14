@@ -81,8 +81,9 @@ class AssemblyCode:
         self.op = ops
         self.inst = []
         if inst_name == 'ecall':
-            self.inst = 
-        self.convert()
+            self.inst = list('00000073')
+        else:
+            self.convert()
     
     def convert(self):
         binary_inst_array = np.array(list('00000000000000000000000000000000'))
