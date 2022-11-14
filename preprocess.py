@@ -1,5 +1,5 @@
 import numba
-import assembler
+# import assembler
 rv32isa = {'add': {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode': '0110011'},
            'sub': {'type': 'R', 'funct3': '000', 'funct7': '0100000', 'opcode': '0110011'},
            'and': {'type': 'R', 'funct3': '111', 'funct7': '0000000', 'opcode': '0110011'},
@@ -46,7 +46,7 @@ Pseu = ['nop', 'mv', 'not', 'neg', 'negw', 'sext.w', 'seqz', 'snez', 'sltz', 'sg
 
 # @numba.jit()
 def to_bit(s: str, op: str) -> str:
-    num = int(s, 16)
+    num = eval(s)
     # print(type(num))
     if rv32isa[op]['type'] == 'J':
         if num < 0:
@@ -123,10 +123,10 @@ def pseudo(res):
 
 def main(infile_name):
     with open(infile_name, encoding='utf-8') as file_obj:
-        cnt = -4
-        alter = {}
-        out = []
-        for line in file_obj:
+        cnt = -4        # address
+        alter = {}      # labels
+        out = []        # output
+        for line in file_obj:   # process the input
             if line == '\n':
                 continue
             end = line.find('#')
@@ -138,7 +138,7 @@ def main(infile_name):
                 arr = init.split()
                 if arr[-1] == '':
                     arr.pop()
-                if arr[0][-1] == ':':
+                if arr[0][-1] == ':':   # build label dictionary
                     if len(arr) == 1:
                         alter.update({arr[0][:-1]: str(hex(cnt + 4))})
                         continue
@@ -165,21 +165,27 @@ def main(infile_name):
                     res.append([])
                 else:
                     res.append(op_addr)
-                res = pseudo(res)
+                res = pseudo(res)   # pseudo instructions
+                res.append(cnt)     # add the address
                 out.append(res)
                 # print(res)
         for i in range(len(out)):
             op = out[i][0]
             for j in range(len(out[i][1])):
-                out[i][1][j] = alter.get(out[i][1][j], out[i][1][j])
-                if out[i][1][j][0] == '-' or (out[i][1][j][0] >= '0' and out[i][1][j][0] <= '9'):
+                if out[i][1][j] in alter:
+                    out[i][1][j] = alter.get(out[i][1][j], out[i][1][j])
+                    out[i][1][j] = str(eval(out[i][1][j])-out[i][2])
+                    # print(out[i][1][j])
+                if out[i][1][j][0] == '-' or ('0' <= out[i][1][j][0] <= '9'):   # change number to bit
                     out[i][1][j] = to_bit(out[i][1][j], op)
         print(out)
-        # print(alter)
-        return out
+        print(alter)
+        # return out
 
 
-raw_inst = main("loop_add.txt")
-for e in raw_inst:
-    hex_inst = assembler.AssemblyCode(e[0], e[1])
-    print(hex_inst)
+# raw_inst = main("loop_add.txt")
+# for e in raw_inst:
+#     hex_inst = assembler.AssemblyCode(e[0], e[1])
+#     print(hex_inst)
+
+main("assembly_code.txt")
