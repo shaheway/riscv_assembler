@@ -44,9 +44,10 @@ rv32isa = {'add': {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode': 
 Pseu = ['nop', 'mv', 'not', 'neg', 'negw', 'sext.w', 'seqz', 'snez', 'sltz', 'sgtz']
 
 
-@numba.jit()
-def hex_to_bit(s, op):
-    hex_num = eval(s)
+# @numba.jit()
+def hex_to_bit(s: str, op: str) -> str:
+    hex_num = int(s, 16)
+    # print(type(hex_num))
     if rv32isa[op]['type'] == 'J':
         if hex_num < 0:
             return str(bin(hex_num & 0xfffff))[2:]
@@ -106,6 +107,7 @@ def pseudo(res):
         res[0] = 'slt'
         res[1].insert(1, 'x0')
     return res
+
 
 def main():
     with open("assembly_code.txt", encoding='utf-8') as file_obj:
