@@ -45,14 +45,14 @@ Pseu = ['nop', 'mv', 'not', 'neg', 'negw', 'sext.w', 'seqz', 'snez', 'sltz', 'sg
 
 
 # @numba.jit()
-def hex_to_bit(s: str, op: str) -> str:
-    hex_num = int(s, 16)
-    # print(type(hex_num))
+def to_bit(s: str, op: str) -> str:
+    num = int(s, 16)
+    # print(type(num))
     if rv32isa[op]['type'] == 'J':
-        if hex_num < 0:
-            return str(bin(hex_num & 0xfffff))[2:]
+        if num < 0:
+            return str(bin(num & 0xfffff))[2:]
         else:
-            bin_str = str(bin(hex_num))[2:]
+            bin_str = str(bin(num))[2:]
             if len(bin_str) > 20:
                 return bin_str[-20:]
             result = ''
@@ -61,10 +61,10 @@ def hex_to_bit(s: str, op: str) -> str:
             result += bin_str
             return result
     else:
-        if hex_num < 0:
-            return str(bin(hex_num & 0xfff))[2:]
+        if num < 0:
+            return str(bin(num & 0xfff))[2:]
         else:
-            bin_str = str(bin(hex_num))[2:]
+            bin_str = str(bin(num))[2:]
             if len(bin_str) > 12:
                 return bin_str[-12:]
             result = ''
@@ -160,8 +160,8 @@ def main():
             op = out[i][0]
             for j in range(len(out[i][1])):
                 out[i][1][j] = alter.get(out[i][1][j], out[i][1][j])
-                if out[i][1][j][0:2] == '0x' or out[i][1][j][0:3] == '-0x':
-                    out[i][1][j] = hex_to_bit(out[i][1][j], op)
+                if out[i][1][j][0:2] == '0x' or out[i][1][j][0:3] == '-0x' or out[i][1][j] == '0':
+                    out[i][1][j] = to_bit(out[i][1][j], op)
         print(out)
         # print(alter)
 
