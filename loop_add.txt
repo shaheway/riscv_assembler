@@ -1,0 +1,15 @@
+# int sum = 0;// sum store in s0
+# int i; // i store in s1
+# for (i = 0; i < 100; i++){
+#     sum += i;
+# }
+
+addi s1, x0, 0
+addi s0, x0, 0
+for:
+    add s0, s0, s1
+    addi s1, s1, 0x1
+    beq s1, 0x65, L1
+L1:
+addi a0, s0, x0
+ecall

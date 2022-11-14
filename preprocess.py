@@ -1,5 +1,5 @@
 import numba
-
+import assembler
 rv32isa = {'add': {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode': '0110011'},
            'sub': {'type': 'R', 'funct3': '000', 'funct7': '0100000', 'opcode': '0110011'},
            'and': {'type': 'R', 'funct3': '111', 'funct7': '0000000', 'opcode': '0110011'},
@@ -109,8 +109,8 @@ def pseudo(res):
     return res
 
 
-def main():
-    with open("assembly_code.txt", encoding='utf-8') as file_obj:
+def main(infile_name):
+    with open(infile_name, encoding='utf-8') as file_obj:
         cnt = -4
         alter = {}
         out = []
@@ -164,6 +164,10 @@ def main():
                     out[i][1][j] = to_bit(out[i][1][j], op)
         print(out)
         # print(alter)
+        return out
 
 
-main()
+raw_inst = main("loop_add.txt")
+for e in raw_inst:
+    hex_inst = assembler.AssemblyCode(e[0], e[1])
+    print(hex_inst)

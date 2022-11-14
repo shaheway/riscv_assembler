@@ -123,8 +123,9 @@ class AssemblyCode:
         inst_str = inst_str.join(self.inst)
         return inst_str
 
-array = [['add', ['x0', 'x0', 'x0']], ['addi', ['s1', 'x0', '000011111001']]]
-for e in array:
-    hex_inst = AssemblyCode(e[0], e[1])
-    print(hex_inst)
+if __name__ == 'main':
+    array = [['add', ['x0', 'x0', 'x0']], ['addi', ['s1', 'x0', '000011111001']]]
+    for e in array:
+        hex_inst = AssemblyCode(e[0], e[1])
+        print(hex_inst)
 
