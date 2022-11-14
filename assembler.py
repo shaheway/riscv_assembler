@@ -80,6 +80,8 @@ class AssemblyCode:
         self.opcode = list(rv32isa[inst_name]['opcode'])
         self.op = ops
         self.inst = []
+        if inst_name == 'ecall':
+            self.inst = 
         self.convert()
     
     def convert(self):
@@ -103,17 +105,17 @@ class AssemblyCode:
             binary_inst_array[20:25] = list(registers[self.op[1]])
             binary_inst_array[25:] = list(self.op[2])[5:]
         if self.type == 'B':
-            binary_inst_array[7:12] = list(self.op[2])[11]+list(self.op[2])[1:5]
+            binary_inst_array[7:12] = list(self.op[2][11])+list(self.op[2][1:5])
             binary_inst_array[12:15] = self.funct3
             binary_inst_array[15:20] = list(registers[self.op[0]])
             binary_inst_array[20:25] = list(registers[self.op[1]])
-            binary_inst_array[25:] = list(self.op[2])[5:11]+list(self.op[2])[12]
+            binary_inst_array[25:] = list(self.op[2][5:11])+list(self.op[2][12])
         if self.type == 'U':
             binary_inst_array[7:12] = list(registers[self.op[0]])
             binary_inst_array[12:] = list(self.op[1])
         if self.type == 'J':
             binary_inst_array[7:12] = list(registers[self.op[0]])
-            binary_inst_array[12:] = list(self.op[1])[12:20]+list(self.op[1])[11]+list(self.op[1])[1:11]+list(self.op[1])[20]
+            binary_inst_array[12:] = list(self.op[1][12:20])+list(self.op[1][11])+list(self.op[1][1:11])+list(self.op[1][20])
         for i in range(0, 32, 4):
             self.inst.append(hex(int(binary_inst_array[i]+binary_inst_array[i+1]+binary_inst_array[i+2]+binary_inst_array[i+3], 2))[-1])
         # print(binary_inst_array)

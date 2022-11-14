@@ -60,6 +60,18 @@ def to_bit(s: str, op: str) -> str:
                 result += '0'
             result += bin_str
             return result
+    elif rv32isa[op]['type'] == 'B':
+        if num < 0:
+            return str(bin(num & 0xffff))[2:]
+        else:
+            bin_str = str(bin(num))[2:]
+            if len(bin_str) > 13:
+                return bin_str[-13:]
+            result = ''
+            for j in range(0, 13 - len(bin_str)):
+                result += '0'
+            result += bin_str
+            return result
     else:
         if num < 0:
             return str(bin(num & 0xfff))[2:]

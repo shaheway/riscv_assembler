@@ -4,12 +4,13 @@
 #     sum += i;
 # }
 
-addi s1, x0, 0
+addi s1, x0, 00000000
 addi s0, x0, 0
 for:
     add s0, s0, s1
     addi s1, s1, 0x1
-    beq s1, 0x65, L1
+    addi s3, x0, 0x65
+    beq s1, s3, L1
 L1:
-addi a0, s0, x0
-ecall
+    add a0, s0, x0
+    ecall
