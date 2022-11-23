@@ -53,10 +53,10 @@ def to_bit(s: str, op: str) -> str:
             return str(bin(num & 0xfffff))[2:]
         else:
             bin_str = str(bin(num))[2:]
-            if len(bin_str) > 20:
-                return bin_str[-20:]
+            if len(bin_str) > 21:
+                return bin_str[-21:]
             result = ''
-            for j in range(0, 20 - len(bin_str)):
+            for j in range(0, 21 - len(bin_str)):
                 result += '0'
             result += bin_str
             return result
