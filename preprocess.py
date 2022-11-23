@@ -201,12 +201,20 @@ def main(infile_name):
                     # print(out[i][1][j])
                 if out[i][1][j][0] == '-' or ('0' <= out[i][1][j][0] <= '9'):   # change number to bit
                     out[i][1][j] = to_bit(out[i][1][j], op)
-        print(out)
+        # print(out)
         # print(alter)
         return out
 
 
+outfile = open("memhex.coe", "w", encoding="utf-8")
+outfile.write('''; This .COE file specifies the contents for a block memory of depth=16, and width=32.
+memory_initialization_radix=16;
+memory_initialization_vector=\n''')
 raw_inst = main("loop_add.txt")
-outfile = open()
-for e in raw_inst:
-    hex_inst = assembler.AssemblyCode(e[0], e[1])
+for i in range(len(raw_inst)):
+    hex_inst = assembler.AssemblyCode(raw_inst[i][0], raw_inst[i][1])
+    if i == len(raw_inst) - 1:
+        outfile.write(hex_inst.out+";\n")
+    else:
+        outfile.write(hex_inst.out+",\n")
+outfile.close()

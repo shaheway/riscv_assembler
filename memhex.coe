@@ -1,0 +1,10 @@
+; This .COE file specifies the contents for a block memory of depth=16, and width=32.
+memory_initialization_radix=16;
+memory_initialization_vector=
+93040000,
+13040000,
+93095006,
+33049400,
+93841400,
+e39c34ff,
+73000000;
