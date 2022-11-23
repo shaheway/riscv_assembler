@@ -92,9 +92,9 @@ class AssemblyCode:
         self.out = ""
         self.inst = []
         if inst_name == 'ecall':
-            self.inst = list('ce000000')
+            self.out = '73000000'
         elif inst_name == "ebreak":
-            self.inst = list('ce000800')
+            self.out = '00100073'
         else:
             self.convert()
     
