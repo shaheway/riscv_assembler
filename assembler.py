@@ -91,9 +91,9 @@ class AssemblyCode:
         self.op = ops
         self.inst = []
         if inst_name == 'ecall':
-            self.inst = list('00000073')
+            self.inst = list('ce000000')
         elif inst_name == "ebreak":
-            self.inst = list('00100073')
+            self.inst = list('ce000800')
         else:
             self.convert()
     
