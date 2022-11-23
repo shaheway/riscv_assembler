@@ -60,6 +60,18 @@ def to_bit(s: str, op: str) -> str:
                 result += '0'
             result += bin_str
             return result
+    elif rv32isa[op]['type'] == 'U':
+        if num < 0:
+            return str(bin(num & 0xfffff))[2:]
+        else:
+            bin_str = str(bin(num))[2:]
+            if len(bin_str) > 32:
+                return bin_str[-32:]
+            result = ''
+            for j in range(0, 32 - len(bin_str)):
+                result += '0'
+            result += bin_str
+            return result
     elif rv32isa[op]['type'] == 'B':
         if num < 0:
             return str(bin(num & 0xffff))[2:]
@@ -101,8 +113,7 @@ def pseudo(res):
         res[0] = 'sub'
         res[1].insert(1, 'x0')
     elif res[0] == 'negw':
-        res[0] = 'subw'
-        res[1].insert(1, 'x0')
+        raise RuntimeError('negwError')
     # elif res[0] == 'sext.w':
     #     res[0] = 'addiw'
     #     res[1].append('0x0')

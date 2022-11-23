@@ -47,7 +47,7 @@ nop
 mv s1, a2
 not s1, a2
 neg s1, a2
-negw s1, a2
+# negw s1, a2
 seqz s1, a2
 snez s1, a2
 sltz s1, a2

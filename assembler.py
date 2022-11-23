@@ -83,6 +83,8 @@ class AssemblyCode:
         self.inst = []
         if inst_name == 'ecall':
             self.inst = list('00000073')
+        elif inst_name == "ebreak":
+            self.inst = list('00100073')
         else:
             self.convert()
     
@@ -114,7 +116,7 @@ class AssemblyCode:
             binary_inst_array[25:] = list(self.op[2][5:11])+list(self.op[2][12])
         if self.type == 'U':
             binary_inst_array[7:12] = list(registers[self.op[0]])
-            binary_inst_array[12:] = list(self.op[1])
+            binary_inst_array[12:] = list(self.op[1][12:32])
         if self.type == 'J':
             binary_inst_array[7:12] = list(registers[self.op[0]])
             binary_inst_array[12:] = list(self.op[1][12:20])+list(self.op[1][11])+list(self.op[1][1:11])+list(self.op[1][20])
