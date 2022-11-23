@@ -177,8 +177,20 @@ def main(infile_name):
                 else:
                     res.append(op_addr)
                 res = pseudo(res)   # pseudo instructions
-                res.append(cnt)     # add the address
-                out.append(res)
+                if res[0] == 'li':
+                    imm = eval(res[1][1])
+                    if 0 <= imm <= 4096:
+                        res = ['addi', [res[1][0], 'x0', res[1][1]], cnt]
+                        out.append(res)
+                    else:
+                        res = ['lui', [res[1][0], str(hex(imm >> 12))], cnt]
+                        out.append(res)
+                        cnt += 4
+                        res = ['addi', [res[1][0], res[1][0], str(hex(imm & 0xfff))], cnt]
+                        out.append(res)
+                else:
+                    res.append(cnt)     # add the address
+                    out.append(res)
                 # print(res)
         for i in range(len(out)):
             op = out[i][0]
@@ -189,14 +201,14 @@ def main(infile_name):
                     # print(out[i][1][j])
                 if out[i][1][j][0] == '-' or ('0' <= out[i][1][j][0] <= '9'):   # change number to bit
                     out[i][1][j] = to_bit(out[i][1][j], op)
-        # print(out)
+        print(out)
         # print(alter)
         return out
 
 
-raw_inst = main("loop_add.txt")
-for e in raw_inst:
-    hex_inst = assembler.AssemblyCode(e[0], e[1])
-    print(hex_inst)
+# raw_inst = main("loop_add.txt")
+# for e in raw_inst:
+#     hex_inst = assembler.AssemblyCode(e[0], e[1])
+#     print(hex_inst)
 
-# main("assembly_code.txt")
+main("assembly_code.txt")
