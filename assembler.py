@@ -39,6 +39,12 @@ rv32isa = {'add'  : {'type': 'R', 'funct3': '000', 'funct7': '0000000', 'opcode'
            'ebreak':{'type': 'I', 'funct3': '000', 'funct7': None     , 'opcode': '1110011'},
            'ecall' :{'type': 'I', 'funct3': '000', 'funct7': None     , 'opcode': '1110011'}
            }
+for key in rv32isa:
+    if rv32isa[key]["funct3"] is not None:
+        rv32isa[key]["funct3"] = rv32isa[key]["funct3"][::-1]
+    if rv32isa[key]["funct7"] is not None:
+        rv32isa[key]["funct7"] = rv32isa[key]["funct7"][::-1]
+    rv32isa[key]["opcode"] = rv32isa[key]["opcode"][::-1]
 registers = {'x0': '00000',
              'ra': '00001',
              'sp': '00010',
@@ -71,6 +77,9 @@ registers = {'x0': '00000',
              't4': '11101',
              't5': '11110',
              't6': '11111'}
+
+for key in registers:
+    registers[key] = registers[key][::-1]
 
 class AssemblyCode:
     def __init__(self, inst_name, ops):
