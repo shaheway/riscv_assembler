@@ -50,52 +50,52 @@ def to_bit(s: str, op: str) -> str:
     # print(type(num))
     if rv32isa[op]['type'] == 'J':
         if num < 0:
-            return str(bin(num & 0xfffff))[2:]
+            return str(bin(num & 0xfffff))[2:][::-1]
         else:
             bin_str = str(bin(num))[2:]
             if len(bin_str) > 21:
-                return bin_str[-21:]
+                return bin_str[-21:][::-1]
             result = ''
             for j in range(0, 21 - len(bin_str)):
                 result += '0'
             result += bin_str
-            return result
+            return result[::-1]
     elif rv32isa[op]['type'] == 'U':
         if num < 0:
-            return str(bin(num & 0xfffff))[2:]
+            return str(bin(num & 0xfffff))[2:][::-1]
         else:
             bin_str = str(bin(num))[2:]
             if len(bin_str) > 32:
-                return bin_str[-32:]
+                return bin_str[-32:][::-1]
             result = ''
             for j in range(0, 32 - len(bin_str)):
                 result += '0'
             result += bin_str
-            return result
+            return result[::-1]
     elif rv32isa[op]['type'] == 'B':
         if num < 0:
-            return str(bin(num & 0xffff))[2:]
+            return str(bin(num & 0xffff))[2:][::-1]
         else:
             bin_str = str(bin(num))[2:]
             if len(bin_str) > 13:
-                return bin_str[-13:]
+                return bin_str[-13:][::-1]
             result = ''
             for j in range(0, 13 - len(bin_str)):
                 result += '0'
             result += bin_str
-            return result
+            return result[::-1]
     else:
         if num < 0:
-            return str(bin(num & 0xfff))[2:]
+            return str(bin(num & 0xfff))[2:][::-1]
         else:
             bin_str = str(bin(num))[2:]
             if len(bin_str) > 12:
-                return bin_str[-12:]
+                return bin_str[-12:][::-1]
             result = ''
             for j in range(0, 12 - len(bin_str)):
                 result += '0'
             result += bin_str
-            return result
+            return result[::-1]
 
 
 def pseudo(res):
