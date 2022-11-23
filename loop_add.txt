@@ -9,6 +9,7 @@ addi s0, x0, 0
 addi s3, x0, 0x65
 for:
     add s0, s0, s1
+    nop
     addi s1, s1, 0x1
     bne s1, s3, for
 ecall

@@ -89,6 +89,7 @@ class AssemblyCode:
         self.funct7 = list(rv32isa[inst_name]['funct7']) if rv32isa[inst_name]['funct7'] else None
         self.opcode = list(rv32isa[inst_name]['opcode'])
         self.op = ops
+        self.out = ""
         self.inst = []
         if inst_name == 'ecall':
             self.inst = list('ce000000')
@@ -135,15 +136,16 @@ class AssemblyCode:
             except:
                 print(self.inst_name)
             '''
-            
+        binary_inst_array = binary_inst_array[::-1]
         for i in range(0, 32, 4):
             self.inst.append(hex(int(binary_inst_array[i]+binary_inst_array[i+1]+binary_inst_array[i+2]+binary_inst_array[i+3], 2))[-1])
-        # print(binary_inst_array)
+        t = self.inst[6]+self.inst[7]+self.inst[4]+self.inst[5]+self.inst[2]+self.inst[3]+self.inst[0]+self.inst[1]
+        self.out = t
+        # print(self.inst)
+        # print(binary_inst_array[::-1])
         
     def __str__(self) -> str:
-        inst_str = ""
-        inst_str = inst_str.join(self.inst)
-        return inst_str
+        return self.out
 
 if __name__ == 'main':
     array = [['add', ['x0', 'x0', 'x0']], ['addi', ['s1', 'x0', '000011111001']]]
