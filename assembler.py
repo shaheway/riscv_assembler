@@ -54,9 +54,9 @@ registers = {'x0': '00000',
              'a2': '01100',
              'a3': '01101',
              'a4': '01110',
-             'a4': '01111',
-             'a5': '10000',
-             'a6': '10001',
+             'a5': '01111',
+             'a6': '10000',
+             'a7': '10001',
              's2': '10010',
              's3': '10011',
              's4': '10100',
@@ -74,6 +74,7 @@ registers = {'x0': '00000',
 
 class AssemblyCode:
     def __init__(self, inst_name, ops):
+        self.inst_name = inst_name
         self.type = rv32isa[inst_name]['type']
         self.funct3 = list(rv32isa[inst_name]['funct3']) if rv32isa[inst_name]['funct3'] else None
         self.funct7 = list(rv32isa[inst_name]['funct7']) if rv32isa[inst_name]['funct7'] else None
@@ -116,7 +117,10 @@ class AssemblyCode:
             binary_inst_array[12:] = list(self.op[1])
         if self.type == 'J':
             binary_inst_array[7:12] = list(registers[self.op[0]])
-            binary_inst_array[12:] = list(self.op[1][12:20])+list(self.op[1][11])+list(self.op[1][1:11])+list(self.op[1][20])
+            try:
+                binary_inst_array[12:] = list(self.op[1][12:20])+list(self.op[1][11])+list(self.op[1][1:11])+list(self.op[1][20])
+            except:
+                print(self.inst_name)
         for i in range(0, 32, 4):
             self.inst.append(hex(int(binary_inst_array[i]+binary_inst_array[i+1]+binary_inst_array[i+2]+binary_inst_array[i+3], 2))[-1])
         # print(binary_inst_array)

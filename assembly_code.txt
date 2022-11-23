@@ -44,14 +44,14 @@ ebreak # Environment BREAK
 ecall # Environment CALL
 # Pseudo Instructions
 nop
-mv rd, rs
-not rd, rs
-neg rd, rs
-negw rd, rs
-seqz rd, rs
-snez rd, rs
-sltz rd, rs
-sgtz rd, rs
+mv s1, a2
+not s1, a2
+neg s1, a2
+negw s1, a2
+seqz s1, a2
+snez s1, a2
+sltz s1, a2
+sgtz s1, a2
 L1:
     addi s2, s1, 0x18
     add s1, s2, s3
