@@ -194,7 +194,7 @@ def main(infile_name):
         return out
 
 
-raw_inst = main("assembly_code.txt")
+raw_inst = main("loop_add.txt")
 for e in raw_inst:
     hex_inst = assembler.AssemblyCode(e[0], e[1])
     print(hex_inst)

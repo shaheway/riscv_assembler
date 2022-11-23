@@ -10,7 +10,6 @@ for:
     add s0, s0, s1
     addi s1, s1, 0x1
     addi s3, x0, 0x65
-    beq s1, s3, L1
-L1:
+    bne s1, s3, for
     add a0, s0, x0
     ecall
