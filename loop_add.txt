@@ -4,12 +4,11 @@
 #     sum += i;
 # }
 
-addi s1, x0, 00000000
+addi s1, x0, 0
 addi s0, x0, 0
+addi s3, x0, 0x65
 for:
     add s0, s0, s1
     addi s1, s1, 0x1
-    addi s3, x0, 0x65
     bne s1, s3, for
-    add a0, s0, x0
-    ecall
+ecall
