@@ -94,7 +94,7 @@ class AssemblyCode:
         if inst_name == 'ecall':
             self.out = '73000000'
         elif inst_name == "ebreak":
-            self.out = '00100073'
+            self.out = '73001000'
         else:
             self.convert()
     
